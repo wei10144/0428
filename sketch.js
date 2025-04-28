@@ -26,28 +26,25 @@ function draw() {
   if (!capture || !capture.loadedmetadata) return; // 如果攝影機未啟用或未準備好，跳過繪製
   background('#656d4a'); // 確保背景顏色持續更新
 
-  // 更新 overlayGraphics
-  drawGridWithCircles();
-
   // 翻轉畫布以水平翻轉影像
   push(); // 儲存當前繪圖狀態
   translate(width, 0); // 將原點移到畫布右上角
   scale(-1, 1); // 水平翻轉畫布
+
+  // 繪製 Graphics 在視訊下方
+  image(
+    overlayGraphics,
+    (width - capture.width) / 2, // 與視訊水平對齊
+    (height - capture.height) / 2, // 與視訊垂直對齊
+    capture.width,
+    capture.height
+  );
 
   // 繪製攝影機影像
   image(
     capture,
     (width - capture.width) / 2, // 計算影像水平居中的位置
     (height - capture.height) / 2, // 計算影像垂直居中的位置
-    capture.width,
-    capture.height
-  );
-
-  // 繪製 Graphics 在視訊上方
-  image(
-    overlayGraphics,
-    (width - capture.width) / 2, // 與視訊水平對齊
-    (height - capture.height) / 2, // 與視訊垂直對齊
     capture.width,
     capture.height
   );
