@@ -68,13 +68,13 @@ function drawGridWithCircles() {
   overlayGraphics.background(0); // 設定背景為黑色
   overlayGraphics.noStroke(); // 移除線條
 
-  // 繪製網格與圓
-  for (let x = 0; x < overlayGraphics.width; x += 80) {
-    for (let y = 0; y < overlayGraphics.height; y += 80) {
+  // 繪製更密集的網格與圓
+  for (let x = 0; x < overlayGraphics.width; x += 40) { // 將間隔從 80 改為 40
+    for (let y = 0; y < overlayGraphics.height; y += 40) { // 將間隔從 80 改為 40
       // 從攝影機影像中取得顏色
       let col = capture.get(x, y); // 取得對應位置的顏色
       overlayGraphics.fill(col); // 設定圓的顏色
-      overlayGraphics.ellipse(x + 40, y + 40, 30, 30); // 繪製圓，寬高改為 30px
+      overlayGraphics.ellipse(x + 20, y + 20, 30, 30); // 繪製圓，中心點位於單位內
     }
   }
 }
