@@ -10,6 +10,13 @@ function setup() {
 
 function draw() {
   background('#656d4a'); // 確保背景顏色持續更新
+
+  // 翻轉畫布以水平翻轉影像
+  push(); // 儲存當前繪圖狀態
+  translate(width, 0); // 將原點移到畫布右上角
+  scale(-1, 1); // 水平翻轉畫布
+
+  // 繪製攝影機影像
   image(
     capture,
     (width - capture.width) / 2, // 計算影像水平居中的位置
@@ -17,6 +24,8 @@ function draw() {
     capture.width,
     capture.height
   );
+
+  pop(); // 恢復繪圖狀態
 }
 
 function windowResized() {
