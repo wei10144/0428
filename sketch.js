@@ -19,9 +19,7 @@ function setup() {
     console.error("無法啟用攝影機:", error);
     noLoop(); // 停止 draw() 的執行
     alert("無法啟用攝影機，請檢查設備或權限。");
-    capture = createCapture(VIDEO)
-capture.size(320,240);//設定顯示畫面大小
-image(capture,mouseX, mouseY)
+  
   }
 }
 
@@ -34,20 +32,20 @@ function draw() {
   translate(width, 0); // 將原點移到畫布右上角
   scale(-1, 1); // 水平翻轉畫布
 
-  // 繪製 Graphics 在視訊下方
-  image(
-    overlayGraphics,
-    (width - capture.width) / 2, // 與視訊水平對齊
-    (height - capture.height) / 2, // 與視訊垂直對齊
-    capture.width,
-    capture.height
-  );
-
   // 繪製攝影機影像
   image(
     capture,
     (width - capture.width) / 2, // 計算影像水平居中的位置
     (height - capture.height) / 2, // 計算影像垂直居中的位置
+    capture.width,
+    capture.height
+  );
+
+  // 繪製 Graphics 在視訊上方
+  image(
+    overlayGraphics,
+    (width - capture.width) / 2, // 與視訊水平對齊
+    (height - capture.height) / 2, // 與視訊垂直對齊
     capture.width,
     capture.height
   );
