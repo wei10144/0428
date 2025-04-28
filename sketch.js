@@ -15,7 +15,6 @@ function setup() {
 
     // 建立與視訊畫面相同大小的 Graphics
     overlayGraphics = createGraphics(capture.width, capture.height);
-    drawGridWithCircles(); // 在 Graphics 上繪製網格與圓
   } catch (error) {
     console.error("無法啟用攝影機:", error);
     noLoop(); // 停止 draw() 的執行
@@ -24,8 +23,11 @@ function setup() {
 }
 
 function draw() {
-  if (!capture) return; // 如果攝影機未啟用，跳過繪製
+  if (!capture || !capture.loadedmetadata) return; // 如果攝影機未啟用或未準備好，跳過繪製
   background('#656d4a'); // 確保背景顏色持續更新
+
+  // 更新 overlayGraphics
+  drawGridWithCircles();
 
   // 翻轉畫布以水平翻轉影像
   push(); // 儲存當前繪圖狀態
@@ -58,12 +60,11 @@ function windowResized() {
   if (capture) {
     capture.size(windowWidth * 0.8, windowHeight * 0.8); // 更新影像大小
     overlayGraphics = createGraphics(capture.width, capture.height); // 重新建立 Graphics
-    drawGridWithCircles(); // 重新繪製網格與圓
   }
 }
 
 function drawGridWithCircles() {
-  if (!overlayGraphics) return;
+  if (!overlayGraphics || !capture) return;
   overlayGraphics.background(0); // 設定背景為黑色
   overlayGraphics.noStroke(); // 移除線條
 
