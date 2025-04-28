@@ -15,11 +15,11 @@ function setup() {
 
     // 建立與視訊畫面相同大小的 Graphics
     overlayGraphics = createGraphics(capture.width, capture.height);
+    drawGridWithCircles(); // 在 Graphics 上繪製網格與圓
   } catch (error) {
     console.error("無法啟用攝影機:", error);
     noLoop(); // 停止 draw() 的執行
     alert("無法啟用攝影機，請檢查設備或權限。");
-  
   }
 }
 
@@ -58,6 +58,7 @@ function windowResized() {
   if (capture) {
     capture.size(windowWidth * 0.8, windowHeight * 0.8); // 更新影像大小
     overlayGraphics = createGraphics(capture.width, capture.height); // 重新建立 Graphics
+    drawGridWithCircles(); // 重新繪製網格與圓
   }
 }
 
@@ -66,13 +67,13 @@ function drawGridWithCircles() {
   overlayGraphics.background(0); // 設定背景為黑色
   overlayGraphics.noStroke(); // 移除線條
 
-  // 繪製更密集的網格與圓
-  for (let x = 0; x < overlayGraphics.width; x += 5) { // 將間隔改為 5
-    for (let y = 0; y < overlayGraphics.height; y += 5) { // 將間隔改為 5
+  // 繪製網格與圓
+  for (let x = 0; x < overlayGraphics.width; x += 80) {
+    for (let y = 0; y < overlayGraphics.height; y += 80) {
       // 從攝影機影像中取得顏色
       let col = capture.get(x, y); // 取得對應位置的顏色
       overlayGraphics.fill(col); // 設定圓的顏色
-      overlayGraphics.ellipse(x + 2.5, y + 2.5, 10, 10); // 繪製圓，寬高為 10，中心點位於單位內
+      overlayGraphics.ellipse(x + 40, y + 40, 75, 75); // 繪製圓，中心點位於單位內
     }
   }
 }
