@@ -4,16 +4,27 @@ let overlayGraphics;
 function setup() {
   createCanvas(windowWidth, windowHeight); // 全視窗畫布
   background('#656d4a'); // 設定背景顏色
-  capture = createCapture(VIDEO); // 擷取攝影機影像
-  capture.size(windowWidth * 0.8, windowHeight * 0.8); // 設定影像大小為視窗的 80%
-  capture.hide(); // 隱藏原始的 HTML 視訊元素
 
-  // 建立與視訊畫面相同大小的 Graphics
-  overlayGraphics = createGraphics(capture.width, capture.height);
-  drawGridWithCircles(); // 在 Graphics 上繪製網格與圓
+  // 嘗試啟用攝影機
+  try {
+    capture = createCapture(VIDEO, (stream) => {
+      console.log("攝影機啟用成功");
+    });
+    capture.size(windowWidth * 0.8, windowHeight * 0.8); // 設定影像大小為視窗的 80%
+    capture.hide(); // 隱藏原始的 HTML 視訊元素
+
+    // 建立與視訊畫面相同大小的 Graphics
+    overlayGraphics = createGraphics(capture.width, capture.height);
+    drawGridWithCircles(); // 在 Graphics 上繪製網格與圓
+  } catch (error) {
+    console.error("無法啟用攝影機:", error);
+    noLoop(); // 停止 draw() 的執行
+    alert("無法啟用攝影機，請檢查設備或權限。");
+  }
 }
 
 function draw() {
+  if (!capture) return; // 如果攝影機未啟用，跳過繪製
   background('#656d4a'); // 確保背景顏色持續更新
 
   // 翻轉畫布以水平翻轉影像
@@ -44,12 +55,15 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight); // 當視窗大小改變時調整畫布
-  capture.size(windowWidth * 0.8, windowHeight * 0.8); // 更新影像大小
-  overlayGraphics = createGraphics(capture.width, capture.height); // 重新建立 Graphics
-  drawGridWithCircles(); // 重新繪製網格與圓
+  if (capture) {
+    capture.size(windowWidth * 0.8, windowHeight * 0.8); // 更新影像大小
+    overlayGraphics = createGraphics(capture.width, capture.height); // 重新建立 Graphics
+    drawGridWithCircles(); // 重新繪製網格與圓
+  }
 }
 
 function drawGridWithCircles() {
+  if (!overlayGraphics) return;
   overlayGraphics.background(0); // 設定背景為黑色
   overlayGraphics.noStroke(); // 移除線條
 
