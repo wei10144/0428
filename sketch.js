@@ -74,7 +74,7 @@ function drawGridWithCircles() {
       // 從攝影機影像中取得顏色
       let col = capture.get(x, y); // 取得對應位置的顏色
       overlayGraphics.fill(col); // 設定圓的顏色
-      overlayGraphics.ellipse(x + 40, y + 40, 75, 75); // 繪製圓，中心點位於單位內
+      overlayGraphics.ellipse(x + 40, y + 40, 30, 30); // 繪製圓，寬高改為 30px
     }
   }
 }
