@@ -19,6 +19,9 @@ function setup() {
     console.error("無法啟用攝影機:", error);
     noLoop(); // 停止 draw() 的執行
     alert("無法啟用攝影機，請檢查設備或權限。");
+    capture = createCapture(VIDEO)
+capture.size(320,240);//設定顯示畫面大小
+image(capture,mouseX, mouseY)
   }
 }
 
