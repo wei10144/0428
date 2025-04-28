@@ -1,4 +1,5 @@
 let capture;
+let overlayGraphics;
 
 function setup() {
   createCanvas(windowWidth, windowHeight); // 全視窗畫布
@@ -6,6 +7,10 @@ function setup() {
   capture = createCapture(VIDEO); // 擷取攝影機影像
   capture.size(windowWidth * 0.8, windowHeight * 0.8); // 設定影像大小為視窗的 80%
   capture.hide(); // 隱藏原始的 HTML 視訊元素
+
+  // 建立與視訊畫面相同大小的 Graphics
+  overlayGraphics = createGraphics(capture.width, capture.height);
+  drawGridWithCircles(); // 在 Graphics 上繪製網格與圓
 }
 
 function draw() {
@@ -25,10 +30,36 @@ function draw() {
     capture.height
   );
 
+  // 繪製 Graphics 在視訊上方
+  image(
+    overlayGraphics,
+    (width - capture.width) / 2, // 與視訊水平對齊
+    (height - capture.height) / 2, // 與視訊垂直對齊
+    capture.width,
+    capture.height
+  );
+
   pop(); // 恢復繪圖狀態
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight); // 當視窗大小改變時調整畫布
   capture.size(windowWidth * 0.8, windowHeight * 0.8); // 更新影像大小
+  overlayGraphics = createGraphics(capture.width, capture.height); // 重新建立 Graphics
+  drawGridWithCircles(); // 重新繪製網格與圓
+}
+
+function drawGridWithCircles() {
+  overlayGraphics.background(0); // 設定背景為黑色
+  overlayGraphics.noStroke(); // 移除線條
+
+  // 繪製網格與圓
+  for (let x = 0; x < overlayGraphics.width; x += 80) {
+    for (let y = 0; y < overlayGraphics.height; y += 80) {
+      // 從攝影機影像中取得顏色
+      let col = capture.get(x, y); // 取得對應位置的顏色
+      overlayGraphics.fill(col); // 設定圓的顏色
+      overlayGraphics.ellipse(x + 40, y + 40, 75, 75); // 繪製圓，中心點位於單位內
+    }
+  }
 }
